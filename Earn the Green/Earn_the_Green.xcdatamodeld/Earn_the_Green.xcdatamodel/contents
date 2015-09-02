@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Company" representedClassName="Company" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="symbol" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="stock" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stock" inverseName="company" inverseEntity="Stock" syncable="YES"/>
+    </entity>
+    <entity name="Investor" representedClassName="Investor" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="income" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="objective" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trades" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="portfolio" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Portfolio" inverseName="investor" inverseEntity="Portfolio" syncable="YES"/>
+        <relationship name="watchlist" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Stock" inverseName="investor" inverseEntity="Stock" syncable="YES"/>
+    </entity>
+    <entity name="OwnedShare" representedClassName="OwnedShare" syncable="YES">
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="quantityForDividend" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="portfolio" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Portfolio" inverseName="shares" inverseEntity="Portfolio" syncable="YES"/>
+        <relationship name="stock" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stock" inverseName="shares" inverseEntity="Stock" syncable="YES"/>
+    </entity>
+    <entity name="Portfolio" representedClassName="Portfolio" syncable="YES">
+        <attribute name="money" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="investor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Investor" inverseName="portfolio" inverseEntity="Investor" syncable="YES"/>
+        <relationship name="shares" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="OwnedShare" inverseName="portfolio" inverseEntity="OwnedShare" syncable="YES"/>
+    </entity>
+    <entity name="Stock" representedClassName="Stock" syncable="YES">
+        <attribute name="askingPrice" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="dividendYield" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="high" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lastChanged" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="low" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="percentChange" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="volume" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="company" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Company" inverseName="stock" inverseEntity="Company" syncable="YES"/>
+        <relationship name="investor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Investor" inverseName="watchlist" inverseEntity="Investor" syncable="YES"/>
+        <relationship name="shares" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OwnedShare" inverseName="stock" inverseEntity="OwnedShare" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Company" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Investor" positionX="0" positionY="45" width="128" height="150"/>
+        <element name="OwnedShare" positionX="-36" positionY="9" width="128" height="105"/>
+        <element name="Portfolio" positionX="-18" positionY="27" width="128" height="90"/>
+        <element name="Stock" positionX="-54" positionY="-9" width="128" height="195"/>
+    </elements>
+</model>
