@@ -93,7 +93,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
                             self.performSegueWithIdentifier("showStockDetailView", sender: GameManager.sharedInstance().getStockForTicker(symbol))
                         }
                     } else { // entity does not yet exist, attempt to create a new one
-                        println("does not exist ")
                         if result!["type"] as! String == "S" {
                             self.downloadTasks.append(YahooFinance.sharedInstance().getInformationForTicker(symbol) {info, error in
                                 if info!["Ask"] as? NSNull != NSNull() {

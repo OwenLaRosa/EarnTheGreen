@@ -40,7 +40,6 @@ class GameManager: NSObject {
         }
         set(newDate) {
             NSUserDefaults.standardUserDefaults().setObject(newDate, forKey: "exDividendDate")
-            //self.exDividendDate = newDate
         }
     }
     
@@ -51,7 +50,6 @@ class GameManager: NSObject {
         }
         set(newDate) {
             NSUserDefaults.standardUserDefaults().setObject(newDate, forKey: "dividendPayDate")
-            //self.dividendPayDate = newDate
         }
     }
     
@@ -85,25 +83,12 @@ class GameManager: NSObject {
     
     /// Updates the data for a random stock in the user's portfolio.
     func stockDataUpdateLoop() {
-        println("stockDataUpdateLoop")
         let shares = user.portfolio.shares.allObjects as! [OwnedShare]
         if shares.count != 0 {
             let share = shares[Int(arc4random() % UInt32(shares.count))]
             Helpers().updateStockData(share.stock) {success, error in
                 
             }
-            //if stock.shares.count == 0 {
-            //    println("nothing to refresh here")
-            //} else {
-            //    println("continue and refresh: \(stock)")
-                /*Helpers().updateStockData(stock) {success, error in
-                if success {
-                // broadcast stock did change notification
-                } else {
-                println(error)
-                }
-                }*/
-            //}
         }
     }
     

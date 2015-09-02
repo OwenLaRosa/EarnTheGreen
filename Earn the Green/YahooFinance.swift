@@ -32,7 +32,6 @@ class YahooFinance: NSObject {
     /// Helper method for converting JSON data into an NSDictionary. If the parsing fails, the completion handler contains the error's localized description.
     func parseJSONData(data: NSData, completionHandler: (result: NSDictionary?, error: String?) -> Void) {
         var parsingError: NSError? = nil
-        //println(NSString(data: data, encoding: NSUTF8StringEncoding)!)
         let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments, error: &parsingError) as! NSDictionary
         if parsingError == nil {
             completionHandler(result: parsedResult, error: nil)
@@ -53,15 +52,6 @@ class YahooFinance: NSObject {
                     if (info["count"] as! Int) == 1 {
                         let tickerInfo = info["results"] as! [String: AnyObject]
                         let quote = tickerInfo["quote"] as! [String: AnyObject]
-                        // println(quote)
-                        println("############")
-                        println(quote["Name"])
-                        println(quote["symbol"])
-                        println(quote["Ask"])
-                        println(quote["DividendYield"])
-                        println(quote["PercentChange"])
-                        println(quote["DaysLow"])
-                        println(quote["DaysHigh"])
                         completionHandler(data: quote, error: nil)
                     } else {
                         println(info["count"] as! Int)
@@ -89,7 +79,6 @@ class YahooFinance: NSObject {
                         let searchResults = resultSet["Result"] as! [[String: AnyObject]]
                         if searchResults.count != 0 {
                             completionHandler(data: searchResults[0], error: nil)
-                            //println(searchResults[0])
                         } else {
                             completionHandler(data: nil, error: "No results found for query: \(query)")
                         }

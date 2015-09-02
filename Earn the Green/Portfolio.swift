@@ -38,7 +38,6 @@ class Portfolio: NSManagedObject {
     /// Adds the specified number of shares to the portfolio and subtracts the appropriate amount of money. Before calling, you should verify that the trade produces valid results.
     func buyStock(stock: Stock, quantity: Int, money: Float) {
         if let ownedShare = ownedShareForStock(stock) {
-            println("value is share")
             ownedShare.quantity += quantity
             self.money -= money
             let currentDate = NSDate()
@@ -46,7 +45,6 @@ class Portfolio: NSManagedObject {
                 ownedShare.quantityForDividend += quantity
             }
         } else {
-            println("value is nil")
             let newShare = OwnedShare(quantity: quantity, context: sharedContext)
             newShare.stock = stock
             newShare.portfolio = self
@@ -59,26 +57,11 @@ class Portfolio: NSManagedObject {
             }
         }
         investor.trades += quantity
-        
-        
-        
-        /*        //shares[index].quantity += quantity
-        ownedShareForStock(stock)?.quantity += quantity
-        self.money -= money
-        }
-        } else {
-        let ownedShare = OwnedShare(quantity: quantity, context: GameManager.sharedInstance().context)
-        ownedShare.stock = stock
-        shares.addObject(OwnedShare)
-        //shares.append(ownedShare)
-        }*/
-        //Helpers().saveContext()
     }
     
     /// Subtracts the specified number of shares from the portfolio and adds the appropriate amount of money. Before calling, you should verify that the trade produces valid results.
     func sellStock(stock: Stock, quantity: Int, money: Float) {
         if let ownedShare = ownedShareForStock(stock) {
-            print("selling old quantity: \(ownedShare.quantity)")
             // check number of dividend eligible shares to sell
             let difference = ownedShare.quantity - ownedShare.quantityForDividend
             if quantity > difference {
@@ -87,7 +70,6 @@ class Portfolio: NSManagedObject {
             // complete the transaction
             ownedShare.quantity -= quantity
             self.money += money
-            print("selling new quantity: \(ownedShare.quantity)")
             if ownedShare.quantity == 0 {
                 println("should remove")
                 shares.removeObject(ownedShare)
@@ -96,19 +78,6 @@ class Portfolio: NSManagedObject {
             }
         }
         investor.trades += quantity
-        //}
-        
-        /*if index >= 0 {
-        let ownedShare = shares[index]
-        ownedShare.quantity -= quantity
-        self.money += money
-        if shares[index].quantity == 0 {
-        shares.removeAtIndex(index)
-        GameManager.sharedInstance().context.deleteObject(ownedShare)
-        }
-        }
-        }*/
-        //Helpers().saveContext()
     }
     
     /// Returns true if the portfolio contains shares of the specified stock. Otherwise, returns false.

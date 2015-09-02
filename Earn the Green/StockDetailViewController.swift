@@ -82,7 +82,6 @@ class StockDetailViewController: UIViewController {
         if shouldRefresh {
             if NSDate().timeIntervalSinceDate(stock!.lastChanged) > 180.0 { // 3 minutes
                 refreshData()
-                println("downloading data")
             }
         }
         shouldRefresh = false
@@ -279,8 +278,6 @@ class StockDetailViewController: UIViewController {
             sharedContext.save(error)
             if error != nil {
                 println(error)
-            } else {
-                println("the error is nil")
             }
         }
     }
