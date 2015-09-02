@@ -89,7 +89,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
             // how to play
             break
         case (1, 0):
-            UIApplication.sharedApplication().openURL(NSURL(fileURLWithPath: "")!)
+            UIApplication.sharedApplication().openURL(NSURL(string: "https://github.com/OwenLaRosa/EarnTheGreen")!)
             // link to source code
             break
         case (2, 0):
