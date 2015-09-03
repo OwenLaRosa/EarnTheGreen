@@ -716,7 +716,7 @@ And that’s just about it. Now go forth and get rich!</string>
             </objects>
             <point key="canvasLocation" x="1115" y="938"/>
         </scene>
-        <!--Watchlist-->
+        <!--Watch-list-->
         <scene sceneID="6jd-Sh-VRw">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="3gh-EC-Sd0" customClass="WatchlistViewController" customModule="Earn_the_Green" customModuleProvider="target" sceneMemberID="viewController">
@@ -763,7 +763,7 @@ And that’s just about it. Now go forth and get rich!</string>
                             <constraint firstItem="O3B-Qd-yE2" firstAttribute="bottom" secondItem="p10-bb-zmc" secondAttribute="top" id="v9u-yL-t7w"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Watchlist" id="qFq-GP-oGB"/>
+                    <navigationItem key="navigationItem" title="Watch-list" id="qFq-GP-oGB"/>
                     <connections>
                         <outlet property="tableView" destination="O3B-Qd-yE2" id="kcW-nW-0mv"/>
                         <segue destination="avx-0Q-sFr" kind="show" identifier="showStockDetailView" id="huM-0M-VK7"/>
@@ -869,7 +869,7 @@ And that’s just about it. Now go forth and get rich!</string>
         <image name="Watchlist" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Pqu-Gx-eBL"/>
+        <segue reference="huM-0M-VK7"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
 </document>
