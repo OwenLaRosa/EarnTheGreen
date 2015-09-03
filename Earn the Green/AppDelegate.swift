@@ -24,6 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         
+        // set the tab selection color to green (same as "Manage Portfolio" button)
+        // thanks to http://stackoverflow.com/questions/27144220/how-to-properly-customize-uitabbar-and-uitabbaritem-on-ios-7-and-ios-8?rq=1
+        let selectedTabColor = UIColor(red: 64.0/255.0, green: 128.0/255.0, blue: 0.0, alpha: 1.0)
+        UITabBar.appearance().tintColor = selectedTabColor
+        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: selectedTabColor], forState: .Selected)
+        
         // check if the user has started playing and display the appropriate view.
         if NSUserDefaults.standardUserDefaults().boolForKey("AppHasLaunched") == false {
             let viewController = storyboard.instantiateViewControllerWithIdentifier("WelcomeViewController") as! UIViewController
