@@ -18,9 +18,23 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        usernameTextField.becomeFirstResponder()
     }
     
     @IBAction func continueButtonTapped(sender: UIButton) {
+        processInput()
+    }
+    
+    // MARK: - UITextFieldDelegate
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        usernameTextField.resignFirstResponder()
+        processInput()
+        return true
+    }
+    
+    func processInput() {
         // inform the user if the username is invalid
         if count(usernameTextField.text!) > 32 {
             let alert = UIAlertController(title: "Invalid Input", message: "Name can't be longer than 32 characters.", preferredStyle: .Alert)
@@ -44,13 +58,6 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
             sharedContext.save(nil)
             performSegueWithIdentifier("ShowTabBarController", sender: nil)
         }
-    }
-    
-    // MARK: - UITextFieldDelegate
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        usernameTextField.resignFirstResponder()
-        return true
     }
     
 }

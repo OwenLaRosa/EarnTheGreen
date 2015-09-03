@@ -389,7 +389,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" indicatorStyle="white" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DI8-75-3XN">
                                 <rect key="frame" x="0.0" y="64" width="600" height="446"/>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <mutableString key="text">Earn the Green is a game based on managing a fake portfolio with real world stock market data. Much like in real life, the goal is to make as much money as possible while minimizing losses. The game takes a simple approach to the complex world of stock trading, offering even the most novice players the chance to become the next fat cat.
+                                <string key="text">Earn the Green is a game based on managing a fake portfolio with real world stock market data. Much like in real life, the goal is to make as much money as possible while minimizing losses. The game takes a simple approach to the complex world of stock trading, offering even the most novice players the chance to become the next fat cat.
 
 On the Home tab, you’ll see an overview of your investments. This includes stats and a small summary of your portfolio. The username you've selected and an estimated net worth will also be displayed.
 
@@ -397,7 +397,7 @@ Tapping “Manage Portfolio” will switch you to the Portfolio tab. Here you ca
 
 Using the search bar or tapping a company’s symbol will take you to a screen where you can view more information on stock prices. Using the onscreen buttons, you can buy and sell the company’s shares. You can also add companies to the Watch-list for later viewing.
 
-And that’s just about it. Now go forth and get rich!</mutableString>
+And that’s just about it. Now go forth and get rich!</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -463,7 +463,7 @@ And that’s just about it. Now go forth and get rich!</mutableString>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Km8-ca-Yrh">
                                 <rect key="frame" x="156" y="197" width="288" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="go"/>
                                 <connections>
                                     <outlet property="delegate" destination="lkg-bn-aXw" id="OvM-4Y-RXl"/>
                                 </connections>
