@@ -86,21 +86,23 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
                 } else {
                     println(result)
                     let symbol = result!["symbol"] as! String
+                    dispatch_async(dispatch_get_main_queue()) {
                     if GameManager.sharedInstance().stockExistsForTicker(symbol) { // Stock entity with this symbol exists
-                        dispatch_async(dispatch_get_main_queue()) {
+                        
                             searchBar.resignFirstResponder()
                             Helpers().hideNetworkActivity()
                             self.performSegueWithIdentifier("showStockDetailView", sender: GameManager.sharedInstance().getStockForTicker(symbol))
-                        }
+                        //}
                     } else { // entity does not yet exist, attempt to create a new one
                         if result!["type"] as! String == "S" {
                             self.downloadTasks.append(YahooFinance.sharedInstance().getInformationForTicker(symbol) {info, error in
                                 if info!["Ask"] as? NSNull != NSNull() {
+                                    dispatch_async(dispatch_get_main_queue()) {
                                     let company = Company(properties: result!, context: sharedContext)
                                     let stock = Stock(properties: info!, context: sharedContext)
                                     company.stock = stock
                                     GameManager.sharedInstance().stocks.append(stock)
-                                    dispatch_async(dispatch_get_main_queue()) {
+                                    
                                         sharedContext.save(nil)
                                         searchBar.resignFirstResponder()
                                         Helpers().hideNetworkActivity()
@@ -116,6 +118,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
                             self.showSearchFailedError(searchQuery)
                         }
                     }
+                }
                 }
             })
         }
