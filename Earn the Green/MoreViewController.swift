@@ -13,7 +13,7 @@ import CoreData
 class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 4
         // About, Source, Reset
     }
     
@@ -25,8 +25,11 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
             // About, How to Play
         case 1:
             rows = 1
-            // Source Code
+            // Change Username
         case 2:
+            rows = 1
+            // Source Code
+        case 3:
             rows = 1
             // Reset
         default:
@@ -57,8 +60,10 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         case 0:
             header = "About"
         case 1:
-            header = "Source"
+            header = "Profile"
         case 2:
+            header = "Source"
+        case 3:
             header = "Reset"
         default:
             break
@@ -69,9 +74,9 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         var footer = ""
         switch section {
-        case 1:
-            footer = "Earn the Green is open-source, meaning that anyone can view and contribute to the project. Tap the link to check out the latest source code on GitHub."
         case 2:
+            footer = "Earn the Green is open-source, meaning that anyone can view and contribute to the project. Tap the link to check out the latest source code on GitHub."
+        case 3:
             footer = "Resetting the game will erase all progress including your portfolio and any settings or data. Only do this if you are completely sure you would like to start over."
         default:
             break
@@ -89,10 +94,13 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
             // how to play
             break
         case (1, 0):
+            changeUsername()
+            break
+        case (2, 0):
             UIApplication.sharedApplication().openURL(NSURL(string: "https://github.com/OwenLaRosa/EarnTheGreen")!)
             // link to source code
             break
-        case (2, 0):
+        case (3, 0):
             resetGame()
             // reset function
             break
@@ -109,12 +117,34 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         case (0, 1):
             cell.textLabel?.text = "How to Play"
         case (1, 0):
-            cell.textLabel?.text = "Source Code"
+            cell.textLabel?.text = "Change Username"
         case (2, 0):
+            cell.textLabel?.text = "Source Code"
+        case (3, 0):
             cell.textLabel?.text = "Reset Game"
         default:
             break
         }
+    }
+    
+    /// Displays an alert that allows the user to change their username.
+    func changeUsername() {
+        let dialog = UIAlertController(title: "Change username.", message: "Enter your new username here. Minimum: 1, Maximum: 32 characters.", preferredStyle: .Alert)
+        dialog.addTextFieldWithConfigurationHandler({(textField: UITextField!) in
+            // allow the detection of changes in the text field
+            textField.addTarget(self, action: "alertTextFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        })
+        dialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        dialog.addAction(UIAlertAction(title: "Ok", style: .Default, handler: {(alertAction: UIAlertAction!) in
+            let textField: UITextField = dialog.textFields![0] as! UITextField
+            dispatch_async(dispatch_get_main_queue()) {
+                GameManager.sharedInstance().user.name = textField.text
+                sharedContext.save(nil)
+            }
+        }))
+        // editing changes won't be detected until the user starts typing, so the button should be disabled by default
+        (dialog.actions[1] as! UIAlertAction).enabled = false
+        presentViewController(dialog, animated: true, completion: nil)
     }
     
     /// Removes the user's investor entity and resets game progress.
@@ -130,6 +160,17 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.presentViewController(alert, animated: true, completion: nil)
         }))
         presentViewController(confirmation, animated: true, completion: nil)
+    }
+    
+    /// Alternative for delegate method in UIAlertView. Referenced from: http://useyourloaf.com/blog/uialertcontroller-changes-in-ios-8.html
+    func alertTextFieldDidChange(sender: UITextField) {
+        let alertController = self.presentedViewController as! UIAlertController
+        let okAction = alertController.actions[1] as! UIAlertAction
+        if count(sender.text) > 0 && count(sender.text) <= 32 {
+            okAction.enabled = true
+        } else {
+            okAction.enabled = false
+        }
     }
     
 }
