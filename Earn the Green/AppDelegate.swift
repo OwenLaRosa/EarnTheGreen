@@ -30,6 +30,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = selectedTabColor
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: selectedTabColor], forState: .Selected)
         
+        // for consistency with the rest of the UI, all text fields including those in search bars should have a green cursor and highlight color
+        UITextField.appearance().tintColor = UIColor(red: 0.0, green: 128.0/255.0, blue: 64.0/255.0, alpha: 1.0)
+        
         // check if the user has started playing and display the appropriate view.
         if NSUserDefaults.standardUserDefaults().boolForKey("AppHasLaunched") == false {
             let viewController = storyboard.instantiateViewControllerWithIdentifier("WelcomeViewController") as! UIViewController
