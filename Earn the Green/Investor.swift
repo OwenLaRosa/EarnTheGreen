@@ -20,13 +20,13 @@ class Investor: NSManagedObject {
     /// Name of the investor.
     @NSManaged var name: String
     
-    //
+    /// The income of the investor. If an Investor instance requires an income stream, use this property to store the income in the database.
     @NSManaged var income: Float
     
     /// Portfolio owned by the investor.
     @NSManaged var portfolio: Portfolio
     
-    //
+    /// The investor's reason for investing. Use this property to display more information about the instance.
     @NSManaged var objective: String
     
     /// Represents the assets on the investor's watchlist. Only relevant for the user.
