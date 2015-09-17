@@ -35,6 +35,7 @@ class YahooFinance: NSObject {
             let parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
             completionHandler(result: parsedResult, error: nil)
         } catch let parsingError as NSError {
+            print(parsingError.localizedDescription)
             completionHandler(result: nil, error: parsingError.localizedDescription)
         }
     }
