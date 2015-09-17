@@ -42,7 +42,7 @@ class YahooFinance: NSObject {
     
     /// Gets the data associated with the specified ticker. Completion handler contains the data in parsed format and the error's localized description if retrieving the data fails.
     func getInformationForTicker(ticker: String, completionHandler: (data: [String: AnyObject]?, error: String?) -> Void) -> NSURLSessionTask {
-        let queryURL = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20%28%22\(ticker)%22%29&env=store://datatables.org/alltableswithkeys&format=json"
+        let queryURL = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20%28%22\(ticker)%22%29&env=store://datatables.org/alltableswithkeys&format=json"
         let task = downloadJSONData(queryURL) {data, downloadError in
             if downloadError != nil {
                 completionHandler(data: nil, error: downloadError)
@@ -65,7 +65,7 @@ class YahooFinance: NSObject {
     
     /// Completion handler contains the search results of asset data for the query or the error's localized description if retrieving the data fails.
     func getTickerForSearch(query: String, completionHandler: (data: [String: AnyObject]?, error: String?) -> Void) -> NSURLSessionTask {
-        let queryURL = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=\(Helpers().formatStringForSearch(query))&callback=YAHOO.Finance.SymbolSuggest.ssCallback"
+        let queryURL = "https://d.yimg.com/autoc.finance.yahoo.com/autoc?query=\(Helpers().formatStringForSearch(query))&callback=YAHOO.Finance.SymbolSuggest.ssCallback"
         let task = downloadJSONData(queryURL) {data, downloadError in
             if downloadError != nil {
                 completionHandler(data: nil, error: downloadError)
