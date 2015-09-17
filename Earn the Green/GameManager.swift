@@ -21,7 +21,7 @@ class GameManager: NSObject {
     /// cache of all Stock entities in Core Data.
     lazy var stocks: [Stock] = {
         let fetchRequest = NSFetchRequest(entityName: "Stock")
-        let stocks = self.context.executeFetchRequest(fetchRequest, error: nil) as! [Stock]
+        let stocks = (try! self.context.executeFetchRequest(fetchRequest)) as! [Stock]
         return stocks
         }()
     
@@ -30,7 +30,7 @@ class GameManager: NSObject {
         let fetchRequest = NSFetchRequest(entityName: "Investor")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "identifier", ascending: true)]
         
-        return self.context.executeFetchRequest(fetchRequest, error: nil)![0] as! Investor
+        return (try! self.context.executeFetchRequest(fetchRequest))[0] as! Investor
         }()
     
     /// Day before which shares must be purchased to be eligible for the next dividend payment.
@@ -184,21 +184,21 @@ extension NSDate {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "dd"
         let string = formatter.stringFromDate(self)
-        return string.toInt()!
+        return Int(string)!
     }
     
     func getMonth() -> Int {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "MM"
         let string = formatter.stringFromDate(self)
-        return string.toInt()!
+        return Int(string)!
     }
     
     func getYear() -> Int {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "YYYY"
         let string = formatter.stringFromDate(self)
-        return string.toInt()!
+        return Int(string)!
     }
     
 }

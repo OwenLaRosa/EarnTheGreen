@@ -19,7 +19,7 @@ class YahooFinance: NSObject {
         
         let task = session.dataTaskWithRequest(request) {data, response, error in
             if error != nil {
-                completionHandler(data: nil, error: error.localizedDescription)
+                completionHandler(data: nil, error: error!.localizedDescription)
             } else {
                 completionHandler(data: data, error: nil)
             }
@@ -31,8 +31,8 @@ class YahooFinance: NSObject {
     
     /// Helper method for converting JSON data into an NSDictionary. If the parsing fails, the completion handler contains the error's localized description.
     func parseJSONData(data: NSData, completionHandler: (result: NSDictionary?, error: String?) -> Void) {
-        var parsingError: NSError? = nil
-        let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments, error: &parsingError) as! NSDictionary
+        let parsingError: NSError? = nil
+        let parsedResult = (try! NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)) as! NSDictionary
         if parsingError == nil {
             completionHandler(result: parsedResult, error: nil)
         } else {
@@ -54,7 +54,7 @@ class YahooFinance: NSObject {
                         let quote = tickerInfo["quote"] as! [String: AnyObject]
                         completionHandler(data: quote, error: nil)
                     } else {
-                        println(info["count"] as! Int)
+                        print(info["count"] as! Int)
                         completionHandler(data: nil, error: parsingError)
                     }
                 }

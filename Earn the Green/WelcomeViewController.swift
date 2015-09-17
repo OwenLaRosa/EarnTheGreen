@@ -36,11 +36,11 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
     
     func processInput() {
         // inform the user if the username is invalid
-        if count(usernameTextField.text!) > 32 {
+        if (usernameTextField.text!).characters.count > 32 {
             let alert = UIAlertController(title: "Invalid Input", message: "Name can't be longer than 32 characters.", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: nil))
             presentViewController(alert, animated: true, completion: nil)
-        } else if count(usernameTextField.text!) == 0 {
+        } else if (usernameTextField.text!).characters.count == 0 {
             let alert = UIAlertController(title: "Invalid Input", message: "Username cannot be empty.", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: nil))
             presentViewController(alert, animated: true, completion: nil)
@@ -55,7 +55,10 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
             // setup the dividend payment dates
             GameManager.sharedInstance().exDividendDate = dividendDates.exDate
             GameManager.sharedInstance().dividendPayDate = dividendDates.payDate
-            sharedContext.save(nil)
+            do {
+                try sharedContext.save()
+            } catch _ {
+            }
             performSegueWithIdentifier("ShowTabBarController", sender: nil)
         }
     }

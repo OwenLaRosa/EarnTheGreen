@@ -25,7 +25,7 @@ class WatchlistViewController: UIViewController, UITableViewDataSource, UITableV
         let fetchRequest = NSFetchRequest(entityName: "Investor")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "identifier", ascending: true)]
         
-        user = sharedContext.executeFetchRequest(fetchRequest, error: nil)![0] as! Investor
+        user = (try! sharedContext.executeFetchRequest(fetchRequest))[0] as! Investor
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -43,7 +43,7 @@ class WatchlistViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("WatchlistTableViewCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("WatchlistTableViewCell")!
         
         configureCell(cell, atIndexPath: indexPath)
         

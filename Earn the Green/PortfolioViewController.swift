@@ -30,7 +30,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
         let fetchRequest = NSFetchRequest(entityName: "Portfolio")
         
         // "0" index will be the user's portfolio
-        portfolio = sharedContext.executeFetchRequest(fetchRequest, error: nil)![0] as! Portfolio
+        portfolio = (try! sharedContext.executeFetchRequest(fetchRequest))[0] as! Portfolio
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -40,7 +40,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
         let fetchRequest = NSFetchRequest(entityName: "OwnedShare")
         fetchRequest.sortDescriptors = []
         fetchRequest.predicate = NSPredicate(format: "portfolio == %@", portfolio)
-        shares = sharedContext.executeFetchRequest(fetchRequest, error: nil) as! [OwnedShare]
+        shares = (try! sharedContext.executeFetchRequest(fetchRequest)) as! [OwnedShare]
         
         tableView?.reloadData()
     }
@@ -52,7 +52,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("AssetTableViewCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("AssetTableViewCell")!
         let stock = shares[indexPath.row].stock
         
         configureCell(cell, asset: stock)
@@ -77,14 +77,14 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         Helpers().showNetworkActivity()
         Helpers().cancelDownloadTasks(downloadTasks)
-        let searchQuery = searchBar.text
+        let searchQuery = searchBar.text!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             self.downloadTasks.append(YahooFinance.sharedInstance().getTickerForSearch(searchQuery) {result, error in
                 if error != nil {
                     Helpers().hideNetworkActivity()
                     self.showSearchFailedError(searchQuery)
                 } else {
-                    println(result)
+                    print(result)
                     let symbol = result!["symbol"] as! String
                     dispatch_async(dispatch_get_main_queue()) {
                         if GameManager.sharedInstance().stockExistsForTicker(symbol) { // Stock entity with this symbol exists
@@ -103,7 +103,10 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
                                             company.stock = stock
                                             GameManager.sharedInstance().stocks.append(stock)
                                             
-                                            sharedContext.save(nil)
+                                            do {
+                                                try sharedContext.save()
+                                            } catch _ {
+                                            }
                                             searchBar.resignFirstResponder()
                                             Helpers().hideNetworkActivity()
                                             self.performSegueWithIdentifier("showStockDetailViewFromSearch", sender: stock)

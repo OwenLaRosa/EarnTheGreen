@@ -43,7 +43,7 @@ class HomeViewController: UIViewController, UITableViewDataSource {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "identifier", ascending: true)]
         
         // first result will be the user's entity
-        self.user = sharedContext.executeFetchRequest(fetchRequest, error: nil)![0] as! Investor
+        self.user = (try! sharedContext.executeFetchRequest(fetchRequest))[0] as! Investor
         
         // begin background refreshing of stock data
         GameManager.sharedInstance().startStockDataTimer()
@@ -72,7 +72,7 @@ class HomeViewController: UIViewController, UITableViewDataSource {
         
         let topShares = fetchTopOwnedShares()
         if topShares.count > 0 {
-            println(topShares.count)
+            print(topShares.count)
             for i in topShares {
                 investorStats.append(("\(i.stock.company.symbol) (\(Helpers().formatNumberWithCommas(i.quantity)))", "\(Helpers().formatNumberAsMoney(i.stock.askingPrice))"))
             }
@@ -95,7 +95,7 @@ class HomeViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("InvestorStatCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("InvestorStatCell")!
         configureCell(cell, indexPath: indexPath)
         
         return cell
@@ -118,7 +118,7 @@ class HomeViewController: UIViewController, UITableViewDataSource {
         let fetchRequest = NSFetchRequest(entityName: "OwnedShare")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "quantity", ascending: false)]
         fetchRequest.fetchLimit = 5
-        let results = sharedContext.executeFetchRequest(fetchRequest, error: nil) as! [OwnedShare]
+        let results = (try! sharedContext.executeFetchRequest(fetchRequest)) as! [OwnedShare]
         return results
     }
     

@@ -58,8 +58,8 @@ class Stock: NSManagedObject {
         
         if properties["PercentChange"] as? NSNull != NSNull() {
             let percentChange = properties["PercentChange"] as! String
-            let numberString = percentChange.substringWithRange(Range<String.Index>(start: advance(percentChange.startIndex, 1), end: advance(percentChange.endIndex, -1)))
-            self.percentChange = "\(percentChange.substringToIndex(advance(percentChange.startIndex, 1)))\(NSNumberFormatter().numberFromString(numberString) as! Float)%"
+            let numberString = percentChange.substringWithRange(Range<String.Index>(start: percentChange.startIndex.advancedBy(1), end: percentChange.endIndex.advancedBy(-1)))
+            self.percentChange = "\(percentChange.substringToIndex(percentChange.startIndex.advancedBy(1)))\(NSNumberFormatter().numberFromString(numberString) as! Float)%"
         } else {
             percentChange = "+0.0%"
         }

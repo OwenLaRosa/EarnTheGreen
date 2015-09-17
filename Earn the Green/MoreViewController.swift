@@ -39,7 +39,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("MoreTableViewCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("MoreTableViewCell")!
         
         configureCell(cell, atIndexPath: indexPath)
         
@@ -47,11 +47,11 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        (view as! UITableViewHeaderFooterView).textLabel.textColor = UIColor.whiteColor()
+        (view as! UITableViewHeaderFooterView).textLabel!.textColor = UIColor.whiteColor()
     }
     
     func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        (view as! UITableViewHeaderFooterView).textLabel.textColor = UIColor.whiteColor()
+        (view as! UITableViewHeaderFooterView).textLabel!.textColor = UIColor.whiteColor()
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -130,20 +130,23 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     /// Displays an alert that allows the user to change their username.
     func changeUsername() {
         let dialog = UIAlertController(title: "Change username.", message: "Enter your new username here. Minimum: 1, Maximum: 32 characters.", preferredStyle: .Alert)
-        dialog.addTextFieldWithConfigurationHandler({(textField: UITextField!) in
+        dialog.addTextFieldWithConfigurationHandler({(textField: UITextField) in
             // allow the detection of changes in the text field
             textField.addTarget(self, action: "alertTextFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         })
         dialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        dialog.addAction(UIAlertAction(title: "Ok", style: .Default, handler: {(alertAction: UIAlertAction!) in
-            let textField: UITextField = dialog.textFields![0] as! UITextField
+        dialog.addAction(UIAlertAction(title: "Ok", style: .Default, handler: {(alertAction: UIAlertAction) in
+            let textField: UITextField = dialog.textFields![0] 
             dispatch_async(dispatch_get_main_queue()) {
-                GameManager.sharedInstance().user.name = textField.text
-                sharedContext.save(nil)
+                GameManager.sharedInstance().user.name = textField.text!
+                do {
+                    try sharedContext.save()
+                } catch _ {
+                }
             }
         }))
         // editing changes won't be detected until the user starts typing, so the button should be disabled by default
-        (dialog.actions[1] as! UIAlertAction).enabled = false
+        (dialog.actions[1] ).enabled = false
         presentViewController(dialog, animated: true, completion: nil)
     }
     
@@ -151,11 +154,14 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func resetGame() {
         let confirmation = UIAlertController(title: "Are you sure?", message: "By resetting the game, all progress will be lost forever. Are you sure you would like to continue?", preferredStyle: .Alert)
         confirmation.addAction(UIAlertAction(title: "No thanks", style: .Cancel, handler: nil))
-        confirmation.addAction(UIAlertAction(title: "I'm sure", style: .Destructive, handler: {(alert: UIAlertAction!) in
+        confirmation.addAction(UIAlertAction(title: "I'm sure", style: .Destructive, handler: {(alert: UIAlertAction) in
             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "AppHasLaunched")
             GameManager.sharedInstance().updateStockDataTimer.invalidate()
             sharedContext.deleteObject(GameManager.sharedInstance().user)
-            sharedContext.save(nil)
+            do {
+                try sharedContext.save()
+            } catch _ {
+            }
             let alert = UIAlertController(title: "Progress Reset", message: "Please restart the game to start over.", preferredStyle: .Alert)
             self.presentViewController(alert, animated: true, completion: nil)
         }))
@@ -165,8 +171,8 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     /// Alternative for delegate method in UIAlertView. Referenced from: http://useyourloaf.com/blog/uialertcontroller-changes-in-ios-8.html
     func alertTextFieldDidChange(sender: UITextField) {
         let alertController = self.presentedViewController as! UIAlertController
-        let okAction = alertController.actions[1] as! UIAlertAction
-        if count(sender.text) > 0 && count(sender.text) <= 32 {
+        let okAction = alertController.actions[1] 
+        if sender.text!.characters.count > 0 && sender.text!.characters.count <= 32 {
             okAction.enabled = true
         } else {
             okAction.enabled = false

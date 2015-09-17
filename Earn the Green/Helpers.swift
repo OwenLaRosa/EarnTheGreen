@@ -81,8 +81,8 @@ struct Helpers {
     func formatStringForSearch(query: String) -> String {
         let input = query.lowercaseString
         var result = ""
-        for i in input {
-            if contains(validCharacters, i) {
+        for i in input.characters {
+            if validCharacters.characters.contains(i) {
                 // only keep valid characters, invalid ones are ignored
                 result += String(i)
             } else {

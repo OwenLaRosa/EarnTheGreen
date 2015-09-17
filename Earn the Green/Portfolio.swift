@@ -71,7 +71,7 @@ class Portfolio: NSManagedObject {
             ownedShare.quantity -= quantity
             self.money += money
             if ownedShare.quantity == 0 {
-                println("should remove")
+                print("should remove")
                 shares.removeObject(ownedShare)
                 ownedShare.stock.shares.removeObject(ownedShare)
                 sharedContext.deleteObject(ownedShare)

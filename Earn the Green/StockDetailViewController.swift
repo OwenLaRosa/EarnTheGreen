@@ -99,7 +99,7 @@ class StockDetailViewController: UIViewController {
     
     @IBAction func watchlistButtonTapped(sender: UIButton) {
         var watchlist = portfolio.investor.watchlist.array as! [Stock]
-        if let index = find(watchlist, stock!) {
+        if let index = watchlist.indexOf(stock!) {
             watchlist.removeAtIndex(index)
             sender.setTitle(" Add to Watchlist ", forState: .Normal)
         } else {
@@ -128,7 +128,7 @@ class StockDetailViewController: UIViewController {
                 if self.portfolio.money >= totalPrice { // user can afford this many shares
                     let confirmation = UIAlertController(title: "Confirm Purchase.", message: "Are you sure you want to buy \(quantity) shares of \(self.stock.company.symbol) for \(Helpers().formatNumberAsMoney(totalPrice))", preferredStyle: .Alert)
                     confirmation.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                    confirmation.addAction(UIAlertAction(title: "Purchase", style: .Default, handler: {(alert: UIAlertAction!) in
+                    confirmation.addAction(UIAlertAction(title: "Purchase", style: .Default, handler: {(alert: UIAlertAction) in
                         self.portfolio.buyStock(self.stock, quantity: quantity, money: totalPrice)
                         self.saveContext()
                         self.configureUI()
@@ -170,7 +170,7 @@ class StockDetailViewController: UIViewController {
                         let adjustedPrice = self.stock.askingPrice * Float(ownedShare.quantity)
                         let alert = UIAlertController(title: "Confirm Transaction.", message: "You only own \(ownedShare.quantity) shares of this company. Would you like to sell all of your shares for \(Helpers().formatNumberAsMoney(adjustedPrice))?", preferredStyle: .Alert)
                         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: {(alert: UIAlertAction!) in
+                        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: {(alert: UIAlertAction) in
                             self.portfolio.sellStock(self.stock!, quantity: ownedShare.quantity, money: adjustedPrice)
                             self.saveContext()
                             self.configureUI()
@@ -180,7 +180,7 @@ class StockDetailViewController: UIViewController {
                     } else { // number of shares to sell is valid
                         let alert = UIAlertController(title: "Confirm Transaction.", message: "Are you sure you want to sell \(quantity) shares of \(self.stock.company.name). fpr \(Helpers().formatNumberAsMoney(totalPrice))?", preferredStyle: .Alert)
                         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: {(alert: UIAlertAction!) in
+                        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: {(alert: UIAlertAction) in
                             self.portfolio.sellStock(self.stock!, quantity: quantity, money: totalPrice)
                             self.saveContext()
                             self.configureUI()
@@ -257,7 +257,10 @@ class StockDetailViewController: UIViewController {
                 // successfully refershed the data, update the UI
                 dispatch_async(dispatch_get_main_queue()) {
                     Helpers().hideNetworkActivity()
-                    sharedContext.save(nil)
+                    do {
+                        try sharedContext.save()
+                    } catch _ {
+                    }
                     self.configureUI()
                 }
             }
@@ -275,9 +278,15 @@ class StockDetailViewController: UIViewController {
     func saveContext() {
         dispatch_async(dispatch_get_main_queue()) {
             let error = NSErrorPointer()
-            sharedContext.save(error)
+            do {
+                try sharedContext.save()
+            } catch let error1 as NSError {
+                error.memory = error1
+            } catch {
+                fatalError()
+            }
             if error != nil {
-                println(error)
+                print(error)
             }
         }
     }
