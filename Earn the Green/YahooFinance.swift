@@ -31,12 +31,11 @@ class YahooFinance: NSObject {
     
     /// Helper method for converting JSON data into an NSDictionary. If the parsing fails, the completion handler contains the error's localized description.
     func parseJSONData(data: NSData, completionHandler: (result: NSDictionary?, error: String?) -> Void) {
-        let parsingError: NSError? = nil
-        let parsedResult = (try! NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)) as! NSDictionary
-        if parsingError == nil {
+        do {
+            let parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
             completionHandler(result: parsedResult, error: nil)
-        } else {
-            completionHandler(result: nil, error: parsingError!.localizedDescription)
+        } catch let parsingError as NSError {
+            completionHandler(result: nil, error: parsingError.localizedDescription)
         }
     }
     
