@@ -36,6 +36,7 @@ class YahooFinance: NSObject {
             completionHandler(result: parsedResult, error: nil)
         } catch let parsingError as NSError {
             print(parsingError.localizedDescription)
+            print(NSString(data: data, encoding: NSUTF8StringEncoding))
             completionHandler(result: nil, error: parsingError.localizedDescription)
         }
     }
