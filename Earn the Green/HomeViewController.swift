@@ -29,11 +29,7 @@ class HomeViewController: UIViewController, UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        tableView.frame.size.height = tableView.contentSize.height
         
-        let width = UIScreen.mainScreen().bounds.width
-        let height = topView.frame.height + tableView.frame.height + 24
-        scrollView.contentSize = CGSizeMake(width, height)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -83,6 +79,16 @@ class HomeViewController: UIViewController, UITableViewDataSource {
         investorStats.append(("", ""))
         
         tableView.reloadData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        tableView.frame.size.height = tableView.contentSize.height
+        
+        let width = UIScreen.mainScreen().bounds.width
+        let height = topView.frame.height + tableView.frame.height + 24
+        scrollView.contentSize = CGSizeMake(width, height)
     }
     
     @IBAction func managePortfolioButtonTapped(sender: UIButton) {
