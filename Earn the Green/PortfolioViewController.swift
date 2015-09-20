@@ -68,8 +68,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UISearch
     func configureCell(cell: UITableViewCell, asset: Stock) {
         let ownedShare = portfolio.ownedShareForStock(asset)!
         
-        cell.textLabel?.text = "\(asset.company.symbol) (\(ownedShare.quantity) share\(Helpers().pluralize(ownedShare.quantity)))"
-        cell.detailTextLabel?.text = "\(Helpers().formatNumberAsMoney(asset.askingPrice))"
+        cell.textLabel?.text = "\(asset.company.name)"
+        cell.detailTextLabel?.text = "Ask: \(Helpers().formatNumberAsMoney(asset.askingPrice)) Owned: \(ownedShare.quantity) Value: \(Helpers().formatNumberAsMoney(asset.askingPrice * Float(ownedShare.quantity)))"
     }
     
     // MARK: - UISearchBarDelegate
