@@ -66,12 +66,12 @@ class YahooFinance: NSObject {
     
     /// Completion handler contains the search results of asset data for the query or the error's localized description if retrieving the data fails.
     func getTickerForSearch(query: String, completionHandler: (data: [String: AnyObject]?, error: String?) -> Void) -> NSURLSessionTask {
-        let queryURL = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=\(Helpers().formatStringForSearch(query))&callback=YAHOO.Finance.SymbolSuggest.ssCallback"
+        let queryURL = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=\(Helpers().formatStringForSearch(query))&region=US&lang=en-us&callback=YAHOO.Finance.SymbolSuggest.ssCallback"
         let task = downloadJSONData(queryURL) {data, downloadError in
             if downloadError != nil {
                 completionHandler(data: nil, error: downloadError)
             } else {
-                let newData = data?.subdataWithRange(NSMakeRange(39, data!.length - 40)) // exclude last character and non-JSON data
+                let newData = data?.subdataWithRange(NSMakeRange(39, data!.length - 41)) // exclude last character and non-JSON data
                 self.parseJSONData(newData!) {result, parsingError in
                     if parsingError != nil {
                         completionHandler(data: nil, error: parsingError)
