@@ -59,6 +59,18 @@ class WatchlistViewController: UIViewController, UITableViewDataSource, UITableV
         cell.textLabel?.text = watchlist[indexPath.row].company.name
     }
     
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        switch editingStyle {
+        case .Delete:
+            watchlist.removeAtIndex(indexPath.row)
+            user.watchlist = NSOrderedSet(array: watchlist)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        default:
+            return
+        }
+        saveContext()
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showStockDetailView" {
             let destination = segue.destinationViewController as! StockDetailViewController
@@ -67,4 +79,15 @@ class WatchlistViewController: UIViewController, UITableViewDataSource, UITableV
             destination.shouldRefresh = true
         }
     }
+    
+    func saveContext() {
+        dispatch_async(dispatch_get_main_queue()) {
+            do {
+                try sharedContext.save()
+            } catch {
+                
+            }
+        }
+    }
+    
 }
