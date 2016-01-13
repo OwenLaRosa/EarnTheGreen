@@ -35,7 +35,9 @@ class Company: NSManagedObject {
         
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-        self.name = properties["name"] as! String
+        // remove strange characters like "&amp;"
+        let name = properties["name"] as! String
+        self.name = name.stringByReplacingOccurrencesOfString("&amp;", withString: "&")
         self.symbol = properties["symbol"] as! String
         self.type = properties["type"] as! String
     }
