@@ -132,6 +132,7 @@ class StockDetailViewController: UIViewController {
                         self.portfolio.buyStock(self.stock, quantity: quantity, money: totalPrice)
                         self.saveContext()
                         self.configureUI()
+                        self.resetSteppers()
                     }))
                     self.buySharesActivityIndicator.stopAnimating()
                     self.presentViewController(confirmation, animated: true, completion: nil)
@@ -174,6 +175,7 @@ class StockDetailViewController: UIViewController {
                             self.portfolio.sellStock(self.stock!, quantity: ownedShare.quantity, money: adjustedPrice)
                             self.saveContext()
                             self.configureUI()
+                            self.resetSteppers()
                         }))
                         self.sellSharesActivityIndicator.stopAnimating()
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -184,6 +186,7 @@ class StockDetailViewController: UIViewController {
                             self.portfolio.sellStock(self.stock!, quantity: quantity, money: totalPrice)
                             self.saveContext()
                             self.configureUI()
+                            self.resetSteppers()
                         }))
                         self.sellSharesActivityIndicator.stopAnimating()
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -238,11 +241,6 @@ class StockDetailViewController: UIViewController {
         } else {
             watchlistButton.setTitle(" Add to Watchlist ", forState: .Normal)
         }
-        
-        sellSharesPriceLabel.text = "0 Shares for $0.00"
-        sellSharesStepper.value = 0.0
-        buySharesPriceLabel.text = "0 Shares for $0.00"
-        buySharesStepper.value = 0.0
     }
     
     /// Refreshes data for the Stock entity.
@@ -265,6 +263,14 @@ class StockDetailViewController: UIViewController {
                 }
             }
         })
+    }
+    
+    /// Resets the values of the buy/sell steppers and their corresponding labels.
+    func resetSteppers() {
+        sellSharesPriceLabel.text = "0 Shares for $0.00"
+        sellSharesStepper.value = 0.0
+        buySharesPriceLabel.text = "0 Shares for $0.00"
+        buySharesStepper.value = 0.0
     }
     
     /// Uses a UIAlertController to inform the user of a failure to refresh the data.
