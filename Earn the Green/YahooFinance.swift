@@ -77,7 +77,7 @@ class YahooFinance: NSObject {
                         completionHandler(data: nil, error: parsingError)
                     } else {
                         let resultSet = result!.valueForKey("ResultSet") as! [String: AnyObject]
-                        let searchResults = resultSet["Result"] as! [[String: AnyObject]]
+                        let searchResults = self.filterResults(resultSet["Result"] as! [[String: AnyObject]])
                         if searchResults.count != 0 {
                             completionHandler(data: searchResults[0], error: nil)
                         } else {
@@ -88,6 +88,17 @@ class YahooFinance: NSObject {
             }
         }
         return task
+    }
+    
+    /// Return an array of American stocks if they exist. If not, return the original list of foreign stocks.
+    private func filterResults(results: [[String: AnyObject]]) -> [[String : AnyObject]] {
+        let usEquities = results.filter() {
+            ["NASDAQ", "NYSE"].contains($0["exchDisp"] as? String ?? "")
+        }
+        if usEquities.count > 0 {
+            return usEquities
+        }
+        return results
     }
     
     // MARK: - Convenience Methods
