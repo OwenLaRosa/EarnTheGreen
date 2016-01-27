@@ -38,11 +38,15 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
         // inform the user if the username is invalid
         if (usernameTextField.text!).characters.count > 32 {
             let alert = UIAlertController(title: "Invalid Input", message: "Name can't be longer than 32 characters.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: {alert in
+                self.usernameTextField.becomeFirstResponder()
+            }))
             presentViewController(alert, animated: true, completion: nil)
         } else if (usernameTextField.text!).characters.count == 0 {
             let alert = UIAlertController(title: "Invalid Input", message: "Username cannot be empty.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: {alert in
+                self.usernameTextField.becomeFirstResponder()
+            }))
             presentViewController(alert, animated: true, completion: nil)
         } else { // proceed to configure the game data
             continueButton.enabled = false
